@@ -1,0 +1,67 @@
+<view class="calculator">
+  <scroll-view class="result vertical-scroll" scroll-y="true">
+    <view class="vertical-item" wx:for="{{results}}" wx:key="index">
+      <scroll-view class="horizontal-scroll" scroll-x="true">
+        <view class="horizontal-item" wx:for="{{results[index].operations}}" wx:key="index">
+          {{item.value}}
+        </view>
+      </scroll-view>
+    </view>
+  </scroll-view>
+
+  <view class="divider" />
+
+  <view class="keyboard">
+    <view class="row">
+      <view class="button" data-value="ac" bindtap="inputNumber">
+        <image class="image" src="../../images/btn_pad_ac_n.png" mode="aspectFit" />
+      </view>
+      <view class="button" data-value="del" bindtap="inputNumber">
+        <image class="image" src="../../images/btn_pad_del_n.png" mode="aspectFit" />
+      </view>
+      <view class="button" data-value="%" bindtap="inputNumber">
+        <image class="image" src="../../images/btn_pad_percent_n.png" mode="aspectFit" />
+      </view>
+      <view class="button" data-value="/" bindtap="inputNumber">
+        <image class="image" src="../../images/btn_pad_div_n.png" mode="aspectFit" />
+      </view>
+    </view>
+    <view class="row">
+      <view class="button" data-value="7" bindtap="inputNumber">7</view>
+      <view class="button" data-value="8" bindtap="inputNumber">8</view>
+      <view class="button" data-value="9" bindtap="inputNumber">9</view>
+      <view class="button" data-value="*" bindtap="inputNumber">
+        <image class="image" src="../../images/btn_pad_mul_n.png" mode="aspectFit" />
+      </view>
+    </view>
+    <view class="row">
+      <view class="button" data-value="4" bindtap="inputNumber">4</view>
+      <view class="button" data-value="5" bindtap="inputNumber">5</view>
+      <view class="button" data-value="6" bindtap="inputNumber">6</view>
+      <view class="button" data-value="-" bindtap="inputNumber">
+        <image class="image" src="../../images/btn_pad_minus_n.png" mode="aspectFit" />
+      </view>
+    </view>
+    <view class="row">
+      <view class="button" data-value="1" bindtap="inputNumber">1</view>
+      <view class="button" data-value="2" bindtap="inputNumber">2</view>
+      <view class="button" data-value="3" bindtap="inputNumber">3</view>
+      <view class="button" data-value="+" bindtap="inputNumber">
+        <image class="image" src="../../images/btn_pad_plus_n.png" mode="aspectFit" />
+      </view>
+    </view>
+    <view class="row">
+      <view class="button" data-value="switch" bindtap="inputNumber">
+        <image class="image" src="../../images/btn_pad_switch.png" mode="aspectFit" />
+      </view>
+      <view class="button" data-value="0" bindtap="inputNumber">0</view>
+      <view class="button" data-value="." bindtap="inputNumber">.</view>
+      <view class="button" data-value="=" bindtap="inputNumber">
+        <view class="circle_bg">
+          <image class="image" src="../../images/btn_pad_equal_n.png" mode="aspectFit" />
+        </view>
+      </view>
+    </view>
+
+  </view>
+</view>
