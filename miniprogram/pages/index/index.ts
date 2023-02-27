@@ -1,23 +1,22 @@
 // index.ts
-import { Operation } from '../../model/operation';
-import { Result } from '../../model/result';
-
-// 获取应用实例
-const app = getApp<IAppOption>()
+import { Expression } from '../../model/expression';
+import { Controller } from '../../controller/controller';
 
 Page({
   data: {
     results: [
-      new Result(),
-      new Result()
-    ]
+      new Expression(),
+      new Expression(),
+      new Expression(),
+    ],
+    controller: new Controller()
   },
   inputNumber: function (e: any) {
     var value = e.currentTarget.dataset.value;
-    console.log(value);
 
     const results = this.data.results;
-    results[0].operations.push(new Operation(value));
+    var expression: Expression = results[this.data.results.length - 1];
+    expression = this.data.controller.input(expression, value);
     this.setData({
       results: results,
     });

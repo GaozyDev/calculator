@@ -1,13 +1,15 @@
 <view class="calculator">
-  <scroll-view class="result vertical-scroll" scroll-y="true">
-    <view class="vertical-item" wx:for="{{results}}" wx:key="index">
-      <scroll-view class="horizontal-scroll" scroll-x="true">
-        <view class="horizontal-item" wx:for="{{results[index].operations}}" wx:key="index">
-          {{item.value}}
-        </view>
-      </scroll-view>
-    </view>
-  </scroll-view>
+  <view class="result">
+    <scroll-view class="vertical-scroll" scroll-y="true">
+      <view class="vertical-item" wx:for="{{results}}" wx:key="index">
+        <scroll-view class="horizontal-scroll" >
+          <view class="horizontal-item" wx:for="{{results[index].operations}}" wx:key="index">
+            {{item.value}}
+          </view>
+        </scroll-view>
+      </view>
+    </scroll-view>
+  </view>
 
   <view class="divider" />
 

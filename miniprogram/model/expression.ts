@@ -1,7 +1,7 @@
 import { Operation } from "./operation";
 
-export class Result {
-  operations: Operation[] = [new Operation("0")];
+export class Expression {
+  operations: Operation[] = [new Operation("0", "number")];
 
   result: number = 456;
 
