@@ -14,9 +14,8 @@
     </scroll-view>
   </view>
 
-  <view class="divider" />
-
   <view class="keyboard">
+    <view class="divider" />
     <view class="row">
       <view class="button" data-value="ac" bindtap="inputNumber">
         <image class="image" src="../../images/btn_pad_ac_n.png" mode="aspectFit" />

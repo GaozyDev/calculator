@@ -11,14 +11,12 @@
   flex-direction: column;
   justify-content: flex-end;
   height: 45%;
-  background-color: #FF7433;
 }
 
 .vertical-item {
   height: auto;
   text-align: right;
   margin-top: 10px;
-  background-color: burlywood;
 }
 
 .result {
