@@ -9,24 +9,84 @@ export class Controller {
   input(expression: Expression, key: any): Expression {
     var newOperation: Operation = this.buildOperation(key);
     this.pushNewOperation(expression, newOperation);
-    this.startCalculate(expression);
+    var expressions: Expression[] = this.splitExpression(expression);
+    console.log(expressions);
+    this.startCalculate(expression, expressions);
     return expression;
   }
 
-  startCalculate(expression: Expression) {
-    var result: number = 0;
-    var math = "+";
+  splitExpression(expression: Expression): Expression[] {
+    var expressions: Expression[] = [new Expression()];
     for (var i = 0; i < expression.operations.length; i++) {
       var operation: Operation = expression.operations[i];
-      if (operation.type == "number") {
-        var numOperation: NumOperation = operation as NumOperation;
-        result = this.calculate(result, numOperation.value, math);
-      }
-
-      if (operation.type == "math") {
-        math = operation.key;
+      var expressionLast: Expression = expressions[expressions.length - 1];
+      var prePriority: boolean = expressionLast.operations.length >= 2 &&
+        (expressionLast.operations[expressionLast.operations.length - 1].key == "*" ||
+          expressionLast.operations[expressionLast.operations.length - 1].key == "/");
+      if (operation.key != "*" && operation.key != "/"
+        && !prePriority) {
+        var priority = this.hasPriority(expressionLast);
+        if (priority) {
+          expressions.push(new Expression());
+          expressionLast = expressions[expressions.length - 1];
+        }
+        expressionLast.operations.push(operation);
+      } else {
+        var priority = this.hasPriority(expressionLast);
+        if (!priority && expressionLast.operations.length >= 2) {
+          var operationPre: Operation = expressionLast.operations.pop() as Operation;
+          expressions.push(new Expression());
+          expressionLast = expressions[expressions.length - 1];
+          expressionLast.operations.push(operationPre);
+        }
+        expressionLast.operations.push(operation);
       }
     }
+    return expressions;
+  }
+
+  hasPriority(expression: Expression): boolean {
+    for (let i = 0; i < expression.operations.length; i++) {
+      const operation = expression.operations[i];
+      if (operation.key == "*" || operation.key == "/") {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  startCalculate(expression: Expression, expressions: Expression[]) {
+    var result: number = 0;
+    var math = "+";
+
+    for (let index = 0; index < expressions.length; index++) {
+      const expression: Expression = expressions[index];
+      var result2: number = 0;
+      var math2 = "+";
+
+      for (var j = 0; j < expression.operations.length; j++) {
+        var operation: Operation = expression.operations[j];
+        if (operation.type == "number") {
+          var numOperation: NumOperation = operation as NumOperation;
+          result2 = this.calculate(result2, numOperation.value, math2);
+        }
+
+        if (operation.type == "math") {
+          if (j != expression.operations.length - 1) {
+            math2 = operation.key;
+          } else {
+            math = operation.key;
+            if (math == "*" || math == "/") {
+              result = this.calculate(result, result2, math);
+              return;
+            }
+          }
+        }
+      }
+
+      result = this.calculate(result, result2, math);
+    }
+
     expression.result = result;
   }
 
@@ -68,8 +128,8 @@ export class Controller {
     }
 
     if (operation.type == "math" && newOperation.type == "math") {
-      operation.key = newOperation.key;
       operation.show = newOperation.show;
+      operation.key = newOperation.key;
       return;
     }
 

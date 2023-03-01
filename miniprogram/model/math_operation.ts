@@ -6,7 +6,9 @@ export class MathOperation extends Operation {
     super(key, type);
     if(key == "/") {
       this.show = "÷";
-    } else {
+    } else if(key == "*") {
+      this.show = "x";
+    }  else {
       this.show = key.toString();
     }
   }
