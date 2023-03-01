@@ -1,12 +1,15 @@
 <view class="calculator">
-  <view class="result">
+  <view class="operations">
     <scroll-view class="vertical-scroll" scroll-y="true">
-      <view class="vertical-item" wx:for="{{results}}" wx:key="index">
+      <view class="vertical-item" wx:for="{{expressions}}" wx:key="index">
         <scroll-view class="horizontal-scroll" >
-          <view class="horizontal-item" wx:for="{{results[index].operations}}" wx:key="index">
-            {{item.value}}
+          <view class="horizontal-item" wx:for="{{expressions[index].operations}}" wx:key="index">
+            {{item.show}}
           </view>
         </scroll-view>
+        <view class="result">
+          ={{item.result}}
+        </view>
       </view>
     </scroll-view>
   </view>
