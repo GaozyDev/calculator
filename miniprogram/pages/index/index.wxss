@@ -10,7 +10,8 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  height: 45%;
+  height: 50%;
+  margin-bottom: 10px;
 }
 
 .vertical-item {
@@ -34,13 +35,12 @@
   width: auto;
   margin-right: 10px;
   text-align: center;
-  line-height: 40px;
-  font-size: 40px;
+  font-size: 60px;
 }
 
 .divider {
   height: 0.5px;
-  background-color: #00000018;
+  background-color: #0000000F;
   margin-left: 20px;
   margin-right: 20px;
 }
@@ -49,7 +49,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 55%;
+  height: 50%;
   margin-bottom: 40px;
 }
 
@@ -57,23 +57,22 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  height: 50px;
+  height: 60px;
 }
 
 .button {
-  flex-basis: calc(25% - 2px);
+  flex-basis: calc(25%);
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 30px;
+  font-size: 36px;
   color: #000;
-  background-color: #FFF;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .circle_bg {
-  width: 40px;
-  height: 40px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   background-color: #FF7433;
   display: flex;
@@ -82,6 +81,6 @@
 }
 
 .image {
-  width: 40%;
-  height: 40%;
+  /* width: 40%;
+  height: 40%; */
 }

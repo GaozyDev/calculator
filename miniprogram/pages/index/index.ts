@@ -7,24 +7,32 @@ var controller = new Controller()
 
 Page({
   data: {
-    expressions: [
-      new Expression(),
-    ],
+    expressions: [new Expression()],
+    hideResult: true
   },
   onLoad: function () {
-    var expression: Expression = this.data.expressions[this.data.expressions.length - 1];
+    this.data.expressions.pop();
+    var expression: Expression = new Expression();
     expression.operations.push(new NumOperation("0", "number", 0));
+    this.data.expressions.push(expression);
     this.setData({
       expressions: this.data.expressions,
+      hideResult: this.hideResult(),
     });
   },
-  inputNumber: function (e: any) {
+  input: function (e: any) {
     var value = e.currentTarget.dataset.value;
     const expressions = this.data.expressions;
     var expression: Expression = expressions[this.data.expressions.length - 1];
     expression = controller.input(expression, value);
+
     this.setData({
       expressions: expressions,
+      hideResult: this.hideResult(),
     });
+  },
+  hideResult: function () {
+    return this.data.expressions.length == 1 && this.data.expressions[0].operations.length == 1
+      && this.data.expressions[0].operations[0].key == "0";
   }
 })

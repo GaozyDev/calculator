@@ -7,7 +7,7 @@
             {{item.show}}
           </view>
         </scroll-view>
-        <view class="result">
+        <view class="result" wx:if="{{!hideResult}}">
           ={{item.result}}
         </view>
       </view>
@@ -17,52 +17,60 @@
   <view class="keyboard">
     <view class="divider" />
     <view class="row">
-      <view class="button" data-value="ac" bindtap="inputNumber">
-        <image class="image" src="../../images/btn_pad_ac_n.png" mode="aspectFit" />
+      <view class="button" data-value="ac" bindtap="input">
+        <image class="image" src="../../images/btn_pad_ac.png" mode="aspectFit" style="width: 30%; height: 30%;" />
       </view>
-      <view class="button" data-value="del" bindtap="inputNumber">
-        <image class="image" src="../../images/btn_pad_del_n.png" mode="aspectFit" />
+      <view class="button" data-value="del" bindtap="input">
+        <image class="image" src="../../images/btn_pad_del.png" mode="aspectFit" 
+        style="width: 30%; height: 30%;"/>
       </view>
-      <view class="button" data-value="%" bindtap="inputNumber">
-        <image class="image" src="../../images/btn_pad_percent_n.png" mode="aspectFit" />
+      <view class="button" data-value="%" bindtap="input">
+        <image class="image" src="../../images/btn_pad_percent.png" mode="aspectFit"
+        style="width: 30%; height: 30%;" />
       </view>
-      <view class="button" data-value="/" bindtap="inputNumber">
-        <image class="image" src="../../images/btn_pad_div_n.png" mode="aspectFit" />
-      </view>
-    </view>
-    <view class="row">
-      <view class="button" data-value="7" bindtap="inputNumber">7</view>
-      <view class="button" data-value="8" bindtap="inputNumber">8</view>
-      <view class="button" data-value="9" bindtap="inputNumber">9</view>
-      <view class="button" data-value="*" bindtap="inputNumber">
-        <image class="image" src="../../images/btn_pad_mul_n.png" mode="aspectFit" />
+      <view class="button" data-value="/" bindtap="input">
+        <image class="image" src="../../images/btn_pad_div_n.png" mode="aspectFit" 
+        style="width: 32%; height: 32%;"/>
       </view>
     </view>
     <view class="row">
-      <view class="button" data-value="4" bindtap="inputNumber">4</view>
-      <view class="button" data-value="5" bindtap="inputNumber">5</view>
-      <view class="button" data-value="6" bindtap="inputNumber">6</view>
-      <view class="button" data-value="-" bindtap="inputNumber">
-        <image class="image" src="../../images/btn_pad_minus_n.png" mode="aspectFit" />
+      <view class="button" data-value="7" bindtap="input">7</view>
+      <view class="button" data-value="8" bindtap="input">8</view>
+      <view class="button" data-value="9" bindtap="input">9</view>
+      <view class="button" data-value="*" bindtap="input">
+        <image class="image" src="../../images/btn_pad_mul_n.png" mode="aspectFit" 
+        style="width: 25%; height: 25%;"/>
       </view>
     </view>
     <view class="row">
-      <view class="button" data-value="1" bindtap="inputNumber">1</view>
-      <view class="button" data-value="2" bindtap="inputNumber">2</view>
-      <view class="button" data-value="3" bindtap="inputNumber">3</view>
-      <view class="button" data-value="+" bindtap="inputNumber">
-        <image class="image" src="../../images/btn_pad_plus_n.png" mode="aspectFit" />
+      <view class="button" data-value="4" bindtap="input">4</view>
+      <view class="button" data-value="5" bindtap="input">5</view>
+      <view class="button" data-value="6" bindtap="input">6</view>
+      <view class="button" data-value="-" bindtap="input">
+        <image class="image" src="../../images/btn_pad_minus_n.png" mode="aspectFit" 
+        style="width: 22%; height: 22%;"/>
       </view>
     </view>
     <view class="row">
-      <view class="button" data-value="switch" bindtap="inputNumber">
-        <image class="image" src="../../images/btn_pad_switch.png" mode="aspectFit" />
+      <view class="button" data-value="1" bindtap="input">1</view>
+      <view class="button" data-value="2" bindtap="input">2</view>
+      <view class="button" data-value="3" bindtap="input">3</view>
+      <view class="button" data-value="+" bindtap="input">
+        <image class="image" src="../../images/btn_pad_plus_n.png" mode="aspectFit" 
+        style="width: 32%; height: 32%;"/>
       </view>
-      <view class="button" data-value="0" bindtap="inputNumber">0</view>
-      <view class="button" data-value="." bindtap="inputNumber">.</view>
-      <view class="button" data-value="=" bindtap="inputNumber">
+    </view>
+    <view class="row">
+      <view class="button" data-value="switch" bindtap="input">
+        <image class="image" src="../../images/btn_pad_switch.png" mode="aspectFit" 
+        style="width: 40%; height: 40%;"/>
+      </view>
+      <view class="button" data-value="0" bindtap="input">0</view>
+      <view class="button" data-value="." bindtap="input">.</view>
+      <view class="button" data-value="=" bindtap="input">
         <view class="circle_bg">
-          <image class="image" src="../../images/btn_pad_equal_n.png" mode="aspectFit" />
+          <image class="image" src="../../images/btn_pad_equal_n.png" mode="aspectFit" 
+          style="width: 32%; height: 32%;"/>
         </view>
       </view>
     </view>
