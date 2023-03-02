@@ -10,7 +10,7 @@ export class Controller {
     var newOperation: Operation = this.buildOperation(key);
     this.pushNewOperation(expression, newOperation);
     var expressions: Expression[] = this.splitExpression(expression);
-    console.log(expressions);
+    console.log(expression);
     this.startCalculate(expression, expressions);
     return expression;
   }
@@ -147,11 +147,43 @@ export class Controller {
       if (operation.key == "=" && newOperation.key == "=") {
         return;
       }
-      if (newOperation.key == "=") {
-        operation.key = "=";
-      }
+
       if (newOperation.key == "ac") {
         expression.operations = [new NumOperation("0", "number", 0)];
+        return;
+      }
+
+      if (newOperation.key == "del" && operation.key != "=") {
+        if (expression.operations.length == 1 && operation.show == "0") {
+          return;
+        }
+
+        if (expression.operations.length == 1 && operation.show.length == 1) {
+          expression.operations = [new NumOperation("0", "number", 0)];
+          return;
+        }
+
+        if (operation.type = "number") {
+          var numOperation: NumOperation = operation as NumOperation;
+          numOperation.show = numOperation.show.substr(0, numOperation.show.length - 1);
+          if(numOperation.show.length == 0) {
+            expression.operations.pop();
+          } else {
+            numOperation.value = parseFloat(numOperation.show);
+          }
+          return;
+        }
+
+        if (operation.type = "math") {
+          expression.operations.pop();
+          return;
+        }
+        return;
+      }
+
+      if (newOperation.key == "=") {
+        operation.key = "=";
+        return;
       }
     }
   }
