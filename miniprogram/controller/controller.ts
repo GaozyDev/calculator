@@ -56,6 +56,11 @@ export class Controller {
   }
 
   startCalculate(expression: Expression, expressions: Expression[]) {
+    var operationLast: Operation = expression.operations[expression.operations.length - 1];
+    if (operationLast.key == "=") {
+      return;
+    }
+
     var result: number = 0;
     var math = "+";
 
@@ -107,9 +112,14 @@ export class Controller {
   }
 
   pushNewOperation(expression: Expression, newOperation: Operation) {
-    var operation: Operation = expression.operations[expression.operations.length - 1];
-    if (operation.type == "number" && newOperation.type == "number") {
-      var numOperation: NumOperation = operation as NumOperation;
+    var operationLast: Operation = expression.operations[expression.operations.length - 1];
+    
+    if (operationLast.type == "number" && newOperation.type == "number") {
+      if(operationLast.key == "=") {
+        return;
+      }
+
+      var numOperation: NumOperation = operationLast as NumOperation;
       var newNumOperation: NumOperation = newOperation as NumOperation;
       if (numOperation.show == "0" && newNumOperation.show == "0") {
         return;
@@ -127,24 +137,36 @@ export class Controller {
       return;
     }
 
-    if (operation.type == "math" && newOperation.type == "math") {
-      operation.show = newOperation.show;
-      operation.key = newOperation.key;
+    if (operationLast.type == "math" && newOperation.type == "math") {
+      if(operationLast.key == "=") {
+        return;
+      }
+
+      operationLast.show = newOperation.show;
+      operationLast.key = newOperation.key;
       return;
     }
 
-    if (operation.type == "number" && newOperation.type == "math") {
+    if (operationLast.type == "number" && newOperation.type == "math") {
+      if(operationLast.key == "=") {
+        return;
+      }
+
       expression.operations.push(newOperation);
       return;
     }
 
-    if (operation.type == "math" && newOperation.type == "number") {
+    if (operationLast.type == "math" && newOperation.type == "number") {
+      if(operationLast.key == "=") {
+        return;
+      }
+
       expression.operations.push(newOperation);
       return;
     }
 
     if (newOperation.type == "function") {
-      if (operation.key == "=" && newOperation.key == "=") {
+      if (operationLast.key == "=" && newOperation.key == "=") {
         return;
       }
 
@@ -153,20 +175,20 @@ export class Controller {
         return;
       }
 
-      if (newOperation.key == "del" && operation.key != "=") {
-        if (expression.operations.length == 1 && operation.show == "0") {
+      if (newOperation.key == "del" && operationLast.key != "=") {
+        if (expression.operations.length == 1 && operationLast.show == "0") {
           return;
         }
 
-        if (expression.operations.length == 1 && operation.show.length == 1) {
+        if (expression.operations.length == 1 && operationLast.show.length == 1) {
           expression.operations = [new NumOperation("0", "number", 0)];
           return;
         }
 
-        if (operation.type = "number") {
-          var numOperation: NumOperation = operation as NumOperation;
+        if (operationLast.type = "number") {
+          var numOperation: NumOperation = operationLast as NumOperation;
           numOperation.show = numOperation.show.substr(0, numOperation.show.length - 1);
-          if(numOperation.show.length == 0) {
+          if (numOperation.show.length == 0) {
             expression.operations.pop();
           } else {
             numOperation.value = parseFloat(numOperation.show);
@@ -174,15 +196,28 @@ export class Controller {
           return;
         }
 
-        if (operation.type = "math") {
+        if (operationLast.type = "math") {
           expression.operations.pop();
           return;
         }
         return;
       }
 
+      if (newOperation.key == "%") {
+        if (operationLast.key == "=") {
+          expression.result /= 100;
+          return;
+        } else if (operationLast.type == "number" && operationLast.key != "%") {
+          var numOperation: NumOperation = operationLast as NumOperation;
+          numOperation.value /= 100;
+          numOperation.show = numOperation.value.toString();
+          numOperation.key = "%";
+          return;
+        }
+      }
+
       if (newOperation.key == "=") {
-        operation.key = "=";
+        operationLast.key = "=";
         return;
       }
     }
@@ -219,7 +254,7 @@ export class Controller {
     }
 
     if (key == "ac"
-      || key == "del" || key == "=") {
+      || key == "del" || key == "=" || key == "%") {
       return new FunctionOperation(key, "function");
     }
 
