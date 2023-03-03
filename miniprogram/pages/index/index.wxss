@@ -23,11 +23,8 @@
 .result {
   display: inline-block;
   width: auto;
-  font-size: 40px;
   margin-right: 10px;
   text-align: center;
-  line-height: 40px;
-  color: #00000099;
 }
 
 .horizontal-item {
@@ -35,7 +32,6 @@
   width: auto;
   margin-right: 10px;
   text-align: center;
-  font-size: 60px;
 }
 
 .divider {
@@ -80,7 +76,12 @@
   align-items: center;
 }
 
-.image {
-  /* width: 40%;
-  height: 40%; */
+.bigFont{
+  font-size: 56px;
+  color: #000000;
+}
+
+.normalFont{
+  font-size: 38px;
+  color: #00000099;
 }
