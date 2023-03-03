@@ -21,6 +21,10 @@ Page({
     });
   },
   input: function (e: any) {
+    wx.vibrateShort({
+      type: "medium"
+    });
+
     var value = e.currentTarget.dataset.value;
     const expressions = this.data.expressions;
     var expression: Expression = expressions[this.data.expressions.length - 1];
