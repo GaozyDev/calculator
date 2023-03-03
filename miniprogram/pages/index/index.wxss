@@ -12,26 +12,16 @@
   justify-content: flex-end;
   height: 50%;
   margin-bottom: 10px;
+  margin-right: 15px;
+  margin-left: 15px;
 }
 
 .vertical-item {
-  height: auto;
   text-align: right;
-  margin-top: 10px;
-}
-
-.result {
-  display: inline-block;
-  width: auto;
-  margin-right: 10px;
-  text-align: center;
 }
 
 .horizontal-item {
   display: inline-block;
-  width: auto;
-  margin-right: 10px;
-  text-align: center;
 }
 
 .divider {

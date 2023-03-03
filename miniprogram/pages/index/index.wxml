@@ -7,7 +7,7 @@
             {{item.show}}
           </view>
         </scroll-view>
-        <view class="result {{expressions[index].operations[expressions[index].operations.length - 1].key == '=' ? 'bigFont' : 'normalFont'}}" wx:if="{{!hideResult}}">
+        <view class="{{expressions[index].operations[expressions[index].operations.length - 1].key == '=' ? 'bigFont' : 'normalFont'}}" wx:if="{{!hideResult}}">
           = {{item.result}}
         </view>
       </view>
