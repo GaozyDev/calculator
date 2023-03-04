@@ -6,13 +6,24 @@ import { Operation } from "../model/operation";
 
 export class Controller {
 
-  input(expression: Expression, key: any): Expression {
+  input(expressions: Expression[], key: any): Expression[] {
     var newOperation: Operation = this.buildOperation(key);
-    this.pushNewOperation(expression, newOperation);
-    var expressions: Expression[] = this.splitExpression(expression);
-    console.log(expression);
-    this.startCalculate(expression, expressions);
-    return expression;
+    expressions = this.pushNewOperation(expressions, newOperation);
+    var expression: Expression = expressions[expressions.length - 1];
+    var splitExpressions: Expression[] = this.splitExpression(expression);
+    console.log(expressions);
+    expression.result = this.startCalculate(splitExpressions);
+    return expressions;
+  }
+
+  addExpression(expressions: Expression[]) {
+    var expression: Expression = expressions[expressions.length - 1];
+    var operationLast: Operation = expression.operations[expression.operations.length - 1];
+    if (operationLast.key == "=") {
+      var temp: Expression = new Expression();
+      temp.operations.push(new NumOperation("0", "number", 0));
+      expressions.push(temp);
+    }
   }
 
   splitExpression(expression: Expression): Expression[] {
@@ -55,12 +66,7 @@ export class Controller {
     return false;
   }
 
-  startCalculate(expression: Expression, expressions: Expression[]) {
-    var operationLast: Operation = expression.operations[expression.operations.length - 1];
-    if (operationLast.key == "=") {
-      return;
-    }
-
+  startCalculate(expressions: Expression[]): number {
     var result: number = 0;
     var math = "+";
 
@@ -83,16 +89,14 @@ export class Controller {
             math = operation.key;
             if (math == "*" || math == "/") {
               result = this.calculate(result, result2, math);
-              return;
+              return result;
             }
           }
         }
       }
-
       result = this.calculate(result, result2, math);
     }
-
-    expression.result = result;
+    return result;
   }
 
   calculate(result: number, value: number, math: string): number {
@@ -111,78 +115,72 @@ export class Controller {
     return result;
   }
 
-  pushNewOperation(expression: Expression, newOperation: Operation) {
-    var operationLast: Operation = expression.operations[expression.operations.length - 1];
-    
-    if (operationLast.type == "number" && newOperation.type == "number") {
-      if(operationLast.key == "=") {
-        return;
-      }
+  pushNewOperation(expressions: Expression[], newOperation: Operation) : Expression[] {
+    if (newOperation.key != "ac") {
+      this.addExpression(expressions);
+    }
 
+    var expression: Expression = expressions[expressions.length - 1];
+    var operationLast: Operation = expression.operations[expression.operations.length - 1];
+    if (operationLast.type == "number" && newOperation.type == "number") {
       var numOperation: NumOperation = operationLast as NumOperation;
       var newNumOperation: NumOperation = newOperation as NumOperation;
       if (numOperation.show == "0" && newNumOperation.show == "0") {
-        return;
+        return expressions;
       }
       if (numOperation.show == "0" && newNumOperation.show != "0") {
         numOperation.show = newNumOperation.show;
         numOperation.value = parseFloat(numOperation.show);
         numOperation.key = newOperation.key;
-        return;
+        return expressions;
       }
 
       numOperation.show += newNumOperation.key;
       numOperation.value = parseFloat(numOperation.show);
       numOperation.key = newOperation.key;
-      return;
+      return expressions;
     }
 
     if (operationLast.type == "math" && newOperation.type == "math") {
-      if(operationLast.key == "=") {
-        return;
-      }
-
       operationLast.show = newOperation.show;
       operationLast.key = newOperation.key;
-      return;
+      return expressions;
     }
 
     if (operationLast.type == "number" && newOperation.type == "math") {
-      if(operationLast.key == "=") {
-        return;
-      }
-
       expression.operations.push(newOperation);
-      return;
+      return expressions;
     }
 
     if (operationLast.type == "math" && newOperation.type == "number") {
-      if(operationLast.key == "=") {
-        return;
-      }
-
       expression.operations.push(newOperation);
-      return;
+      return expressions;
     }
 
     if (newOperation.type == "function") {
       if (operationLast.key == "=" && newOperation.key == "=") {
-        return;
+        return expressions;
       }
 
       if (newOperation.key == "ac") {
-        expression.operations = [new NumOperation("0", "number", 0)];
-        return;
+        if (expression.operations.length == 1 && expression.operations[0].key == "0") {
+          var exp = new Expression();
+          exp.operations = [new NumOperation("0", "number", 0)];
+          expressions = [exp];
+        } else {
+          expression.operations = [new NumOperation("0", "number", 0)];
+        }
+        return expressions;
       }
 
       if (newOperation.key == "del" && operationLast.key != "=") {
         if (expression.operations.length == 1 && operationLast.show == "0") {
-          return;
+          return expressions;
         }
 
         if (expression.operations.length == 1 && operationLast.show.length == 1) {
           expression.operations = [new NumOperation("0", "number", 0)];
-          return;
+          return expressions;
         }
 
         if (operationLast.type = "number") {
@@ -193,33 +191,35 @@ export class Controller {
           } else {
             numOperation.value = parseFloat(numOperation.show);
           }
-          return;
+          return expressions;
         }
 
         if (operationLast.type = "math") {
           expression.operations.pop();
-          return;
+          return expressions;
         }
-        return;
+        return expressions;
       }
 
       if (newOperation.key == "%") {
         if (operationLast.key == "=") {
           expression.result /= 100;
-          return;
+          return expressions;
         } else if (operationLast.type == "number" && operationLast.key != "%") {
           var numOperation: NumOperation = operationLast as NumOperation;
           numOperation.value /= 100;
           numOperation.show = numOperation.value.toString();
           numOperation.key = "%";
-          return;
+          return expressions;
         }
       }
 
       if (newOperation.key == "=") {
         operationLast.key = "=";
-        return;
+        return expressions;
       }
+
+      return [];
     }
   }
 

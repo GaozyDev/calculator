@@ -18,6 +18,7 @@
 
 .vertical-item {
   text-align: right;
+  margin-top: 10px;
 }
 
 .horizontal-item {
@@ -74,4 +75,9 @@
 .normalFont{
   font-size: 38px;
   color: #00000099;
+}
+
+.historyFont {
+  font-size: 20px;
+  color: #0000007F;
 }

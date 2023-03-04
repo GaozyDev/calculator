@@ -26,10 +26,7 @@ Page({
     });
 
     var value = e.currentTarget.dataset.value;
-    const expressions = this.data.expressions;
-    var expression: Expression = expressions[this.data.expressions.length - 1];
-    expression = controller.input(expression, value);
-
+    const expressions = controller.input(this.data.expressions, value);
     this.setData({
       expressions: expressions,
       hideResult: this.hideResult(),

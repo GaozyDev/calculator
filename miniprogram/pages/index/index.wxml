@@ -2,12 +2,12 @@
   <view class="operations">
     <scroll-view class="vertical-scroll" scroll-y="true">
       <view class="vertical-item" wx:for="{{expressions}}" wx:key="index">
-        <scroll-view class="vertical-item {{expressions[index].operations[expressions[index].operations.length - 1].key == '=' ? 'normalFont' : 'bigFont'}}" >
+        <scroll-view class="vertical-item {{expressions[index].operations[expressions[index].operations.length - 1].key == '=' ? 'normalFont' : 'bigFont'}} {{index == expressions.length - 1 ? '' : 'historyFont'}}">
           <view class="horizontal-item" wx:for="{{expressions[index].operations}}" wx:key="index">
             {{item.show}}
           </view>
         </scroll-view>
-        <view class="{{expressions[index].operations[expressions[index].operations.length - 1].key == '=' ? 'bigFont' : 'normalFont'}}" wx:if="{{!hideResult}}">
+        <view class="{{expressions[index].operations[expressions[index].operations.length - 1].key == '=' ? 'bigFont' : 'normalFont'}} {{index == expressions.length - 1 ? '' : 'historyFont'}}" wx:if="{{!(index == expressions.length - 1 && expressions[index].operations.length == 1 && expressions[index].operations[0].key == '0')}}">
           = {{item.result}}
         </view>
       </view>
@@ -21,16 +21,13 @@
         <image class="image" src="../../images/btn_pad_ac.png" mode="aspectFit" style="width: 30%; height: 30%;" />
       </view>
       <view class="button" data-value="del" bindtap="input">
-        <image class="image" src="../../images/btn_pad_del.png" mode="aspectFit" 
-        style="width: 30%; height: 30%;"/>
+        <image class="image" src="../../images/btn_pad_del.png" mode="aspectFit" style="width: 30%; height: 30%;" />
       </view>
       <view class="button" data-value="%" bindtap="input">
-        <image class="image" src="../../images/btn_pad_percent.png" mode="aspectFit"
-        style="width: 30%; height: 30%;" />
+        <image class="image" src="../../images/btn_pad_percent.png" mode="aspectFit" style="width: 30%; height: 30%;" />
       </view>
       <view class="button" data-value="/" bindtap="input">
-        <image class="image" src="../../images/btn_pad_div_n.png" mode="aspectFit" 
-        style="width: 32%; height: 32%;"/>
+        <image class="image" src="../../images/btn_pad_div_n.png" mode="aspectFit" style="width: 32%; height: 32%;" />
       </view>
     </view>
     <view class="row">
@@ -38,8 +35,7 @@
       <view class="button" data-value="8" bindtap="input">8</view>
       <view class="button" data-value="9" bindtap="input">9</view>
       <view class="button" data-value="*" bindtap="input">
-        <image class="image" src="../../images/btn_pad_mul_n.png" mode="aspectFit" 
-        style="width: 25%; height: 25%;"/>
+        <image class="image" src="../../images/btn_pad_mul_n.png" mode="aspectFit" style="width: 25%; height: 25%;" />
       </view>
     </view>
     <view class="row">
@@ -47,8 +43,7 @@
       <view class="button" data-value="5" bindtap="input">5</view>
       <view class="button" data-value="6" bindtap="input">6</view>
       <view class="button" data-value="-" bindtap="input">
-        <image class="image" src="../../images/btn_pad_minus_n.png" mode="aspectFit" 
-        style="width: 22%; height: 22%;"/>
+        <image class="image" src="../../images/btn_pad_minus_n.png" mode="aspectFit" style="width: 22%; height: 22%;" />
       </view>
     </view>
     <view class="row">
@@ -56,21 +51,18 @@
       <view class="button" data-value="2" bindtap="input">2</view>
       <view class="button" data-value="3" bindtap="input">3</view>
       <view class="button" data-value="+" bindtap="input">
-        <image class="image" src="../../images/btn_pad_plus_n.png" mode="aspectFit" 
-        style="width: 32%; height: 32%;"/>
+        <image class="image" src="../../images/btn_pad_plus_n.png" mode="aspectFit" style="width: 32%; height: 32%;" />
       </view>
     </view>
     <view class="row">
       <view class="button" data-value="switch" bindtap="input">
-        <image class="image" src="../../images/btn_pad_switch.png" mode="aspectFit" 
-        style="width: 40%; height: 40%;"/>
+        <image class="image" src="../../images/btn_pad_switch.png" mode="aspectFit" style="width: 40%; height: 40%;" />
       </view>
       <view class="button" data-value="0" bindtap="input">0</view>
       <view class="button" data-value="." bindtap="input">.</view>
       <view class="button" data-value="=" bindtap="input">
         <view class="circle_bg">
-          <image class="image" src="../../images/btn_pad_equal_n.png" mode="aspectFit" 
-          style="width: 32%; height: 32%;"/>
+          <image class="image" src="../../images/btn_pad_equal_n.png" mode="aspectFit" style="width: 32%; height: 32%;" />
         </view>
       </view>
     </view>
