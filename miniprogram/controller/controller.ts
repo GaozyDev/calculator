@@ -126,7 +126,7 @@ export class Controller {
   }
 
   pushNewOperation(expressions: Expression[], newOperation: Operation): Expression[] {
-    if (newOperation.key != "ac" && newOperation.key != "del") {
+    if (newOperation.key != "ac" && newOperation.key != "del" && newOperation.key != "%" && newOperation.key != "=") {
       this.addExpression(expressions, newOperation);
     }
 
