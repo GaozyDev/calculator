@@ -11,7 +11,7 @@ export class Controller {
     expressions = this.pushNewOperation(expressions, newOperation);
     var expression: Expression = expressions[expressions.length - 1];
     var splitExpressions: Expression[] = this.splitExpression(expression);
-    console.log(expressions);
+    console.log(splitExpressions);
     expression.result = this.startCalculate(splitExpressions);
     return expressions;
   }
@@ -27,33 +27,34 @@ export class Controller {
   }
 
   splitExpression(expression: Expression): Expression[] {
-    var expressions: Expression[] = [new Expression()];
+    var splitResult: Expression[] = [new Expression()];
     for (var i = 0; i < expression.operations.length; i++) {
       var operation: Operation = expression.operations[i];
-      var expressionLast: Expression = expressions[expressions.length - 1];
+      var expressionLast: Expression = splitResult[splitResult.length - 1];
       var prePriority: boolean = expressionLast.operations.length >= 2 &&
         (expressionLast.operations[expressionLast.operations.length - 1].key == "*" ||
           expressionLast.operations[expressionLast.operations.length - 1].key == "/");
-      if (operation.key != "*" && operation.key != "/"
-        && !prePriority) {
+
+      if (operation.key != "*" && operation.key != "/" && !prePriority) {
+        // 当前不是乘除，并且上一个操作也不是乘除
         var priority = this.hasPriority(expressionLast);
         if (priority) {
-          expressions.push(new Expression());
-          expressionLast = expressions[expressions.length - 1];
+          splitResult.push(new Expression());
+          expressionLast = splitResult[splitResult.length - 1];
         }
-        expressionLast.operations.push(operation);
       } else {
+        // 当前是乘除或上一个操作是乘除
         var priority = this.hasPriority(expressionLast);
         if (!priority && expressionLast.operations.length >= 2) {
           var operationPre: Operation = expressionLast.operations.pop() as Operation;
-          expressions.push(new Expression());
-          expressionLast = expressions[expressions.length - 1];
+          splitResult.push(new Expression());
+          expressionLast = splitResult[splitResult.length - 1];
           expressionLast.operations.push(operationPre);
         }
-        expressionLast.operations.push(operation);
       }
+      expressionLast.operations.push(operation);
     }
-    return expressions;
+    return splitResult;
   }
 
   hasPriority(expression: Expression): boolean {
@@ -115,8 +116,8 @@ export class Controller {
     return result;
   }
 
-  pushNewOperation(expressions: Expression[], newOperation: Operation) : Expression[] {
-    if (newOperation.key != "ac") {
+  pushNewOperation(expressions: Expression[], newOperation: Operation): Expression[] {
+    if (newOperation.key != "ac" && newOperation.key != "del") {
       this.addExpression(expressions);
     }
 
@@ -125,9 +126,11 @@ export class Controller {
     if (operationLast.type == "number" && newOperation.type == "number") {
       var numOperation: NumOperation = operationLast as NumOperation;
       var newNumOperation: NumOperation = newOperation as NumOperation;
+      // 0 输入0
       if (numOperation.show == "0" && newNumOperation.show == "0") {
         return expressions;
       }
+      // 0 输入非0数字
       if (numOperation.show == "0" && newNumOperation.show != "0") {
         numOperation.show = newNumOperation.show;
         numOperation.value = parseFloat(numOperation.show);
@@ -135,34 +138,42 @@ export class Controller {
         return expressions;
       }
 
+      // 非0数字 输入非0数字
       numOperation.show += newNumOperation.key;
       numOperation.value = parseFloat(numOperation.show);
       numOperation.key = newOperation.key;
       return expressions;
     }
 
+    // 运算符 运算符
     if (operationLast.type == "math" && newOperation.type == "math") {
       operationLast.show = newOperation.show;
       operationLast.key = newOperation.key;
       return expressions;
     }
 
+    // 数字 运算符
     if (operationLast.type == "number" && newOperation.type == "math") {
       expression.operations.push(newOperation);
       return expressions;
     }
 
+    // 运算符 数字
     if (operationLast.type == "math" && newOperation.type == "number") {
       expression.operations.push(newOperation);
       return expressions;
     }
 
+    // 功能键
     if (newOperation.type == "function") {
+      // = =
       if (operationLast.key == "=" && newOperation.key == "=") {
         return expressions;
       }
 
+      // 归零键
       if (newOperation.key == "ac") {
+        // 如果最后一个算术式是“0”，那么重置所有算术式，否则只需重置最后一个
         if (expression.operations.length == 1 && expression.operations[0].key == "0") {
           var exp = new Expression();
           exp.operations = [new NumOperation("0", "number", 0)];
@@ -173,17 +184,21 @@ export class Controller {
         return expressions;
       }
 
+      // 删除键
       if (newOperation.key == "del" && operationLast.key != "=") {
+        // “0” 无需删除
         if (expression.operations.length == 1 && operationLast.show == "0") {
           return expressions;
         }
 
-        if (expression.operations.length == 1 && operationLast.show.length == 1) {
-          expression.operations = [new NumOperation("0", "number", 0)];
-          return expressions;
-        }
-
         if (operationLast.type = "number") {
+
+          // 只有一个数字
+          if (expression.operations.length == 1) {
+            expression.operations = [new NumOperation("0", "number", 0)];
+            return expressions;
+          }
+
           var numOperation: NumOperation = operationLast as NumOperation;
           numOperation.show = numOperation.show.substr(0, numOperation.show.length - 1);
           if (numOperation.show.length == 0) {
@@ -198,7 +213,6 @@ export class Controller {
           expression.operations.pop();
           return expressions;
         }
-        return expressions;
       }
 
       if (newOperation.key == "%") {
@@ -218,9 +232,8 @@ export class Controller {
         operationLast.key = "=";
         return expressions;
       }
-
-      return [];
     }
+    return expressions;
   }
 
   buildOperation(key: any): Operation {

@@ -17,7 +17,6 @@ Page({
     this.data.expressions.push(expression);
     this.setData({
       expressions: this.data.expressions,
-      hideResult: this.hideResult(),
     });
   },
   input: function (e: any) {
@@ -29,11 +28,6 @@ Page({
     const expressions = controller.input(this.data.expressions, value);
     this.setData({
       expressions: expressions,
-      hideResult: this.hideResult(),
     });
   },
-  hideResult: function () {
-    return this.data.expressions.length == 1 && this.data.expressions[0].operations.length == 1
-      && this.data.expressions[0].operations[0].key == "0";
-  }
 })
