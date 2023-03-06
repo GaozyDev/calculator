@@ -16,12 +16,18 @@ export class Controller {
     return expressions;
   }
 
-  addExpression(expressions: Expression[]) {
+  addExpression(expressions: Expression[], newOperation: Operation) {
     var expression: Expression = expressions[expressions.length - 1];
     var operationLast: Operation = expression.operations[expression.operations.length - 1];
     if (operationLast.key == "=") {
       var temp: Expression = new Expression();
-      temp.operations.push(new NumOperation("0", "number", 0));
+      var numOperation;
+      if(newOperation.type == "math") {
+        numOperation = new NumOperation(expression.result.toString(), "number", expression.result);
+      } else {
+        numOperation = new NumOperation("0", "number", 0);
+      }
+      temp.operations.push(numOperation);
       expressions.push(temp);
     }
   }
@@ -121,7 +127,7 @@ export class Controller {
 
   pushNewOperation(expressions: Expression[], newOperation: Operation): Expression[] {
     if (newOperation.key != "ac" && newOperation.key != "del") {
-      this.addExpression(expressions);
+      this.addExpression(expressions, newOperation);
     }
 
     var expression: Expression = expressions[expressions.length - 1];
