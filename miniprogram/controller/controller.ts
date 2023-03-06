@@ -84,18 +84,21 @@ export class Controller {
         }
 
         if (operation.type == "math") {
-          if (j != expression.operations.length - 1) {
-            math2 = operation.key;
-          } else {
-            math = operation.key;
-            if (math == "*" || math == "/") {
-              result = this.calculate(result, result2, math);
-              return result;
+          math2 = operation.key;
+          if (j == expression.operations.length - 1) {
+            if (math2 == "+" || math2 == "-") {
+              math = math2;
             }
           }
         }
       }
-      result = this.calculate(result, result2, math);
+
+      if (index == 0) {
+        // 第一个算术式直接 0 + result2
+        result = this.calculate(result, result2, "+");
+      } else {
+        result = this.calculate(result, result2, math);
+      }
     }
     return result;
   }
