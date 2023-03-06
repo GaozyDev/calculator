@@ -143,14 +143,19 @@ export class Controller {
       if (numOperation.show == "0" && newNumOperation.show != "0") {
         numOperation.show = newNumOperation.show;
         numOperation.value = parseFloat(numOperation.show);
-        numOperation.key = newOperation.key;
+        numOperation.key = numOperation.show;
         return expressions;
       }
 
-      // 非0数字 输入非0数字
+      // 重复输入小数点
+      if(newNumOperation.key == "." && numOperation.show.includes(".")) {
+        return expressions;
+      }
+
+      // 非0数字 输入任意数字
       numOperation.show += newNumOperation.key;
       numOperation.value = parseFloat(numOperation.show);
-      numOperation.key = newOperation.key;
+      numOperation.key = numOperation.show;
       return expressions;
     }
 

@@ -7,7 +7,7 @@
             {{item.show}}
           </view>
         </scroll-view>
-        <view class="{{expressions[index].operations[expressions[index].operations.length - 1].key == '=' ? 'bigFont' : 'normalFont'}} {{index == expressions.length - 1 ? '' : 'historyFont'}}" wx:if="{{!(index == expressions.length - 1 && expressions[index].operations.length == 1 && expressions[index].operations[0].key == '0')}}">
+        <view class="{{expressions[index].operations[expressions[index].operations.length - 1].key == '=' ? 'bigFont' : 'normalFont'}} {{index == expressions.length - 1 ? '' : 'historyFont'}}" wx:if="{{!(index == expressions.length - 1 && expressions[index].operations.length == 1 && expressions[index].operations[0].show == '0')}}">
           = {{item.result}}
         </view>
       </view>
